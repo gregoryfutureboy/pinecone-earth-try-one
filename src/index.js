@@ -1,12 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { ApolloClient } from 'apollo-client';
+import { ApolloProvider } from 'react-apollo';
+import { ApolloLink } from 'apollo-link'
+import { HttpLink } from 'apollo-link-http'
+import { onError } from 'apollo-link-error'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const link = new HttpLink({
+  uri: 'https://api-useast.graphcms.com/v1/cjsxdlkb0eio501bsjb1mxp56/master'
+})
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
+const cache = new InMemoryCache()
+
+const client = new ApolloClient({
+  link,
+  cache
+})
+
+ReactDOM.render(
+  <ApolloProvider client={client}>
+      <App />
+  </ApolloProvider>, document.getElementById('root')
+)
