@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "alias": ["https://pinecone-earth-try-one-akldg23ie.now.sh", "pinecone.earth"],
   "name": "pinecone-earth-try-one",
   "builds": [
     {
