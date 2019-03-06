@@ -3,8 +3,6 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import styled, { keyframes } from 'styled-components';
 
-import BlackLogo from './../../assets/images/pineconeLogoBlack.svg';
-
 const spinning = keyframes`
   from {
     transform: rotate(0deg);
@@ -29,7 +27,11 @@ const TextContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-top: 3rem;
+  margin-top: 5rem;
+
+  @media (max-width: 475px) {
+    margin-top: 4.2rem;
+  }
 `
 
 const StyledH3 = styled.h3`
@@ -39,10 +41,21 @@ const StyledH3 = styled.h3`
   letter-spacing: 0.1rem;
 `
 
+const StyledH1 = styled.h1`
+  @media (max-width: 475px) {
+    font-size: 24px;
+    margin-top: 1.2rem;
+  }
+`
+
 const PineconeBlackLogo = styled.img`
   margin: 0;
-  width: 255px;
+  width: 333px;
   animation: ${spinning} 42s linear infinite;
+
+  @media (max-width: 475px) {
+    width: 222px;
+  }
 `
 
 const GET_LANDING = gql`
@@ -50,6 +63,9 @@ const GET_LANDING = gql`
     landingPages {
       h1
       h3
+      logo {
+        url
+      }
     }
   }
 `
@@ -71,19 +87,19 @@ class Landing extends Component {
               return null
             }
 
-            return (
-              <LandingContainer>
-                <PineconeBlackLogo src={BlackLogo} alt='pinecone-black-logo' />
+            return landingPages.map((assets) => (
+              <LandingContainer key={assets.h1}>
+                <PineconeBlackLogo src={assets.logo.url} alt='pinecone-black-logo' />
                 <TextContainer>
                   <StyledH3>
-                    {landingPages[0].h3}
+                    {assets.h3}
                   </StyledH3>
-                <h1>
-                  {landingPages[0].h1}
-                </h1>
+                  <StyledH1>
+                    {assets.h1}
+                  </StyledH1>
                 </TextContainer>
               </LandingContainer>
-            )
+            ))
           }
         }
       </Query>
